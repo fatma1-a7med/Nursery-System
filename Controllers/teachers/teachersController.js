@@ -37,24 +37,25 @@ exports.addNewTeacher = (request, response, next) => {
 };
 
 exports.updateTeacher = (request, response, next) => {
-    const teacherId = request.params.id;
     const updatedData = request.body;
 
-    if (!teacherId) {
+    if (!updatedData._id) {
         throw new Error("Teacher ID is required");
     }
-
-    teacherSchema.updateOne(
-        {_id: teacherId},
-        updatedData
-        )
+ 
+    teacherSchema.updateOne({ _id: updatedData._id } )
+        .then((existingTeacher) => {
+            if (!existingTeacher) {
+                throw new Error("Teacher not found");
+            }
+        
+            return teacherSchema.updateOne({ _id: updatedData._id }, updatedData);
+        })
         .then(() => {
-            return teacherSchema.findOne({_id: teacherId});
+            return teacherSchema.findOne({ _id: updatedData._id });
         })
         .then((updatedTeacher) => {
-            if (!updatedTeacher) {
-                throw new Error("Teacher not Exists");
-            }
+            
             response.status(200).json({ data: updatedTeacher });
         })
         .catch((error) => {

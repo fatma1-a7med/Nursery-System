@@ -1,9 +1,9 @@
 const { body, param, query } = require("express-validator");
 
 exports.insertValidator = [
-  body("_id")
+/*   body("_id")
     .isInt()
-    .withMessage("Child id must be Integer"),
+    .withMessage("Child id must be Integer"), */
   body("fullname")
     .isAlpha()
     .withMessage("Child fullname must be string"),
@@ -27,9 +27,9 @@ exports.insertValidator = [
 ];
 
   exports.updateValidator = [
-    body("_id")
+   /*  body("_id")
       .isInt()
-      .withMessage("Child id must be Integer"),
+      .withMessage("Child id must be Integer"), */
     body("fullname")
       .isAlpha()
       .optional()

@@ -2,20 +2,24 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const dot_env = require("dotenv").config();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json'); 
+
 const teacherRoute=require("./Routes/teacherRoute");
 const childRoute=require("./Routes/childRouter");
 const classRoute=require("./Routes/classRouter");
 const loginRoute = require("./Routes/authenticationRoute");
-const authenticationMW = require("./MiddleWares/authenticationMW");
-const dot_env = require("dotenv").config();
+const {isAuthorized, isTeacher} = require("./MiddleWares/authenticationMW");
+
 
 const server=express();
 
-//console.log(server);
+
 const port=process.env.PORT || 8080;
 
 //open connection then open server
-mongoose.connect("mongodb://127.0.0.1:27017/NurserySystem")
+mongoose.connect(process.env.DB_URL)
 .then(()=>{
     console.log("DB Connected....");
     server.listen(port,()=>{
@@ -40,28 +44,15 @@ server.use(cors(corsOptions));
 
 server.use(express.json());
 
-server.use(loginRoute);
+/* server.use(loginRoute);
 
-server.use(authenticationMW.isAuthorized,authenticationMW.isTeacher);
+server.use(isAuthorized,isTeacher); */
 
 //routes
-server.use(teacherRoute,childRoute,classRoute);
+server.use( teacherRoute, childRoute, classRoute);
 
-
-
-
-/* 
-server.get('/students',(request,response,next)=>{
-    response.status(200).json({data:"Ok"});
-});
-
-server.post('/students',(request,response,next)=>{
-    response.status(200).json({data:"Ok from post"});
-}); */
-
-
-
-
+// Swagger UI setup
+server.use('/Nursery', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 

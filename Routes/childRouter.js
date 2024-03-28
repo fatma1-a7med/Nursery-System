@@ -9,6 +9,8 @@ router
      .route("/child")
      .get(controller.getAllchildrens)
      .post(insertValidator,validationResult,controller.addNewchild)
+     .patch(updateValidator,validationResult,controller.updatechild)
+
      
 
 //second route
@@ -16,7 +18,6 @@ router
      .route("/child/:id")
      .get(controller.getchildrenById)
      .delete(controller.deletechild)
-     .patch(updateValidator,validationResult,controller.updatechild)
 
 
 

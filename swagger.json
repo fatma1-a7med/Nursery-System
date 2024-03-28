@@ -1,0 +1,319 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Nursery System API",
+      "description": "API documentation for Nursery System project",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8080"
+      }
+    ],
+    "paths": {
+      "/login": {
+        "post": {
+          "summary": "User login",
+          "description": "Authenticate user and generate token for authorization",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login successful"
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/teachers": {
+        "get": {
+          "summary": "Get all teachers",
+          "description": "Retrieve a list of all teachers",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "post": {
+          "summary": "Add a new teacher",
+          "description": "Add a new teacher to the system",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Teacher"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Teacher added successfully"
+            }
+          }
+        }
+      },
+      "/teachers/supervisors": {
+        "get": {
+          "summary": "Get all supervisors",
+          "description": "Retrieve a list of all supervisors",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/teachers/{id}": {
+        "get": {
+          "summary": "Get teacher by ID",
+          "description": "Retrieve details of a specific teacher by ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "ID of the teacher to retrieve",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/child": {
+        "get": {
+          "summary": "Get all children",
+          "description": "Retrieve a list of all children",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "post": {
+          "summary": "Add a new child",
+          "description": "Add a new child to the system",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Child"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Child added successfully"
+            }
+          }
+        }
+      },
+      "/child/{id}": {
+        "get": {
+          "summary": "Get child by ID",
+          "description": "Retrieve details of a specific child by ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "ID of the child to retrieve",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/class": {
+        "get": {
+          "summary": "Get all classes",
+          "description": "Retrieve a list of all classes",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "post": {
+          "summary": "Add a new class",
+          "description": "Add a new class to the system",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Class"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Class added successfully"
+            }
+          }
+        }
+      },
+      "/class/child/{id}": {
+        "get": {
+          "summary": "Get child info by class ID",
+          "description": "Retrieve information of children in a specific class by class ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "ID of the class",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/class/teacher/{id}": {
+        "get": {
+          "summary": "Get supervisor info by class ID",
+          "description": "Retrieve information of the supervisor of a specific class by class ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "ID of the class",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/class/{id}": {
+        "get": {
+          "summary": "Get class by ID",
+          "description": "Retrieve details of a specific class by ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "ID of the class to retrieve",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Teacher": {
+          "type": "object",
+          "properties": {
+            "fullname": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "teacher",
+                "supervisor"
+              ]
+            }
+          }
+        },
+        "Child": {
+          "type": "object",
+          "properties": {
+            "fullname": {
+              "type": "string"
+            },
+            "age": {
+              "type": "number"
+            },
+            "level": {
+              "type": "string"
+            },
+            "address": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string"
+                },
+                "street": {
+                  "type": "number"
+                },
+                "building": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "Class": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    }
+  }
+  

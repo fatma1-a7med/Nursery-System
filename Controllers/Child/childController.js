@@ -35,33 +35,33 @@ exports.addNewchild = (request, response, next) => {
     })
     .catch((error) => next(error));
 };
-  
 exports.updatechild = (request, response, next) => {
-    const childId = request.params.id;
     const updatedData = request.body;
 
-    if (!childId) {
+    if (!updatedData._id) {
         throw new Error("Child ID is required");
     }
-
-    childrenSchema.updateOne(
-        {_id: childId},
-        updatedData
-        )
+ 
+    childrenSchema.updateOne({ _id: updatedData._id } )
+        .then((existingChild) => {
+            if (!existingChild) {
+                throw new Error("Child not found");
+            }
+        
+            return childrenSchema.updateOne({ _id: updatedData._id }, updatedData);
+        })
         .then(() => {
-            return childrenSchema.findOne({_id: childId});
+            return childrenSchema.findOne({ _id: updatedData._id });
         })
         .then((updatedChild) => {
-            if (!updatedChild) {
-                throw new Error("Child not Exists");
-            }
+            
             response.status(200).json({ data: updatedChild });
         })
         .catch((error) => {
             next(error);
         });
-
 };
+
 
 exports.deletechild = (request, response, next) => {
     const childId = request.params.id;

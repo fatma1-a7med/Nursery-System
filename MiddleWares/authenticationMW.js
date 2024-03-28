@@ -5,7 +5,7 @@ module.exports.isAuthorized = (req, res, next) => {
     console.log("------------------------");
     let token = req.get("authorization").split(" ")[1];
     console.log(token);
-    let decoded_token = jwt.verify(token, "os track");
+    let decoded_token = jwt.verify(token,process.env.SECRETKEY);
     console.log(decoded_token);
     req.token = decoded_token;
     console.log(req.token);
