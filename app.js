@@ -44,9 +44,9 @@ server.use(cors(corsOptions));
 
 server.use(express.json());
 
-/* server.use(loginRoute);
+server.use(loginRoute);
 
-server.use(isAuthorized,isTeacher); */
+server.use(isAuthorized,isTeacher);
 
 //routes
 server.use( teacherRoute, childRoute, classRoute);
