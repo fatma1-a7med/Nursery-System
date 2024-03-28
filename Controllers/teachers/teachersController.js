@@ -1,4 +1,6 @@
 const teacherSchema = require("./../../Model/teacherModel");
+const bcrypt = require('bcryptjs');
+
 
 exports.getAllteachers=(request,response,next)=>{
     teacherSchema.find({})
@@ -90,6 +92,37 @@ exports.getAllsupervisors=(request,response,next)=>{
     });
 };
 
+exports.changePassword = (request, response, next) => {
+    const { password } = request.body;
+    const userId = request.params.id;
+
+    teacherSchema.findById(userId)
+        .then(user => {
+            if (!user) {
+                throw new Error('User not found');
+            }
+            bcrypt.hash(password, 10, (error, hashedPassword) => {
+                if (error) {
+                    return next(error);
+                }
+
+                user.password = hashedPassword;
+
+                const updateData = { password: hashedPassword };
+
+                teacherSchema.updateOne({ _id: userId }, updateData)
+                    .then(() => {
+                        response.status(200).json({ message: 'Password changed successfully' });
+                    })
+                    .catch(error => {
+                        next(error);
+                    });
+            });
+        })
+        .catch(error => {
+            next(error);
+        });
+};
 
 
 /* exports.updateAllTeachers = (request, response, next) => {

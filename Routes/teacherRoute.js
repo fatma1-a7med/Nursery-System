@@ -2,8 +2,8 @@
 const controller=require("../Controllers/teachers/teachersController");
 const {insertValidator,updateValidator} = require("./../MiddleWares/validations/teacherValidator");
 const validationResult = require("./../MiddleWares/validations/validatorResult");
-/* const {isAuthorized,isTeacher} = require("../MiddleWares/authenticationMW");
- */
+const {isAuthorized,isTeacher} = require("../MiddleWares/authenticationMW");
+
 const router = express.Router();
 
 //first route 
@@ -26,6 +26,9 @@ router
      .route("/teachers/:id")
      .get(controller.getTeacherById)
      .delete(controller.deleteTeacher)
+     .patch(isTeacher,controller.changePassword)
+
+   
 
 
 
