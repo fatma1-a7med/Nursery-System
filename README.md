@@ -49,7 +49,11 @@ Multer (for file uploads)
 
 *Getting Started*
 
+
 Install dependencies using *npm install*.
+
 Set up the environment file (env) with required configurations.
+
 Start the server using *npm run serve* (to run nodemon).
+
 Access the Swagger documentation to explore available endpoints and their usage.
