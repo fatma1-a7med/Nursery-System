@@ -40,9 +40,9 @@ const upload = multer({ storage, fileFilter });
 //first route 
 router
      .route("/teachers")
-     .get(isTeacher, controller.getAllteachers)
-    .post(isAuthorized, insertValidator,validationResult,upload.single('image'), controller.addNewTeacher)
-     .patch(isTeacher,updateValidator,validationResult,controller.updateTeacher)
+     .get(isAuthorized, controller.getAllteachers)
+    .post(isAuthorized, upload.single('image'),insertValidator,validationResult,controller.addNewTeacher)
+     .patch(isTeacher, upload.single('image'),updateValidator,validationResult,controller.updateTeacher)
 
      
 

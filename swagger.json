@@ -61,12 +61,17 @@
       "get": {
         "summary": "Get all teachers",
         "description": "Retrieve a list of all teachers",
-        "security": [],
+        
         "responses": {
           "200": {
             "description": "Successful operation"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "post": {
         "summary": "Add a new teacher",
@@ -76,7 +81,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Teacher"
+                "$ref": "./Model/teacherModel"
               }
             }
           }
@@ -84,6 +89,30 @@
         "responses": {
           "200": {
             "description": "Teacher added successfully"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update a teacher",
+        "description": "Update an existing teacher's information",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./Model/teacherModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Teacher updated successfully"
           }
         },
         "security": [
@@ -159,7 +188,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Child"
+                "$ref": "./Model/childModel/schema"
               }
             }
           }

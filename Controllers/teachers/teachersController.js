@@ -40,10 +40,13 @@ exports.addNewTeacher=(request,response,next)=>{
     })
     object.save()
         .then(data => {
+            console.log(request.body);
             //console.log(request.file);
             response.status(200).json({data});
         })
         .catch(error=>{
+            console.log(request.body);
+            
             next(error);
         })
 };
@@ -56,6 +59,10 @@ exports.updateTeacher = (request, response, next) => {
         throw new Error("Teacher ID is required");
     }
  
+    if (request.file && request.file.filename) {
+        updatedData.image = request.file.filename;
+    }
+    
     teacherSchema.updateOne({ _id: updatedData._id } )
         .then((existingTeacher) => {
             if (!existingTeacher) {

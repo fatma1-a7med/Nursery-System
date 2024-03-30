@@ -1,9 +1,7 @@
 const { body} = require("express-validator");
 
 exports.insertValidator = [
-/*   body("_id")
-    .isMongoId()
-    .withMessage("Teacher id must be objectId"), */
+
   body("fullname")
     .isAlpha()
     .withMessage("Teacher fullname must be string"),
@@ -16,16 +14,13 @@ exports.insertValidator = [
  
     .withMessage("Teacher email must be valid"),
   
-
   body("role")
     .isString()
     .optional()
     .withMessage("Teacher role must be teacher or supervisor") 
 ];
 exports.updateValidator = [
-/*     body("_id")
-      .isMongoId()
-      .withMessage("Teacher id must be objectId"), */
+
     body("fullname")
       .isAlpha()
       .optional()
