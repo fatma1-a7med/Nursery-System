@@ -3,29 +3,60 @@ const controller=require("../Controllers/teachers/teachersController");
 const {insertValidator,updateValidator} = require("./../MiddleWares/validations/teacherValidator");
 const validationResult = require("./../MiddleWares/validations/validatorResult");
 const {isAuthorized,isTeacher} = require("../MiddleWares/authenticationMW");
+ const multer = require("multer");
 
+const path = require("path");
+ 
 const router = express.Router();
+
+//upload image to mongodb
+const storage = multer.diskStorage({
+     destination: (req, file, cb) => {
+       cb(null, path.join(__dirname, "./../images"));
+     },
+     filename: (req, file, cb) => {
+       let finalName =
+         new Date().toLocaleDateString().replace(/\//g, "_") +
+         "_" +
+         file.originalname;
+       cb(null, finalName);
+     },
+   });
+
+   const fileFilter = (request, file, cb) => {
+     if (
+       file.mimetype == "image/png" || 
+       file.mimetype == "image/jpg" ||
+       file.mimetype == "image/jpeg"
+     ) {
+       cb(null, true);
+     } else {
+       cb(new Error("file should be Image only"));
+     }
+   };
+   
+const upload = multer({ storage, fileFilter });
 
 //first route 
 router
      .route("/teachers")
-     .get( controller.getAllteachers)
-     .post(insertValidator,validationResult,controller.addNewTeacher)
-     .patch(updateValidator,validationResult,controller.updateTeacher)
+     .get(isTeacher, controller.getAllteachers)
+    .post(isAuthorized, insertValidator,validationResult,upload.single('image'), controller.addNewTeacher)
+     .patch(isTeacher,updateValidator,validationResult,controller.updateTeacher)
 
      
 
 //second route
 router
      .route("/teachers/supervisors")
-     .get(controller.getAllsupervisors)
+     .get(isAuthorized,controller.getAllsupervisors)
 
      
 //third route 
 router
      .route("/teachers/:id")
-     .get(controller.getTeacherById)
-     .delete(controller.deleteTeacher)
+     .get(isAuthorized,controller.getTeacherById)
+     .delete(isAuthorized,controller.deleteTeacher)
      .patch(isTeacher,controller.changePassword)
 
    

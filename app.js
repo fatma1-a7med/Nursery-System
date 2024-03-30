@@ -13,6 +13,7 @@ const loginRoute = require("./Routes/authenticationRoute");
 const {isAuthorized, isTeacher} = require("./MiddleWares/authenticationMW");
 
 
+
 const server=express();
 
 
@@ -31,7 +32,6 @@ mongoose.connect(process.env.DB_URL)
 })
 
 
-
 //First MiddleWare use morgan
 server.use(morgan('tiny'));
 
@@ -44,15 +44,17 @@ server.use(cors(corsOptions));
 
 server.use(express.json());
 
+// Swagger UI setup
+server.use('/Nursery', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 server.use(loginRoute);
 
 server.use(isAuthorized,isTeacher);
 
+
 //routes
 server.use( teacherRoute, childRoute, classRoute);
 
-// Swagger UI setup
-server.use('/Nursery', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 
@@ -64,6 +66,8 @@ server.use((request,response)=>{
 
 // Error MiddleWare 
 server.use((error,request,response,next)=>{
-    response.status(500).json({data:`Error MiddleWare ${error}`})
+   
+        response.status(500).json({ data: `Error MiddleWare: ${error.message}` });
+    
 });
 

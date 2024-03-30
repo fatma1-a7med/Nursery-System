@@ -2,6 +2,7 @@ const teacherSchema = require("./../../Model/teacherModel");
 const bcrypt = require('bcryptjs');
 
 
+
 exports.getAllteachers=(request,response,next)=>{
     teacherSchema.find({})
     .then((data)=>{
@@ -27,16 +28,26 @@ exports.getTeacherById = (request, response, next) => {
     })
 };
 
-exports.addNewTeacher = (request, response, next) => {
-    let object = new teacherSchema(request.body);
-  object
-    .save()
-    .then((data) => {
-        response.status(200).json({ data });
+
+
+exports.addNewTeacher=(request,response,next)=>{
+    let object = new teacherSchema({
+     
+        fullname:request.body.fullname,
+        password:request.body.password,
+        email:request.body.email,
+        image:request.file.filename
     })
-    .catch((error) => next(error));
-   
+    object.save()
+        .then(data => {
+            //console.log(request.file);
+            response.status(200).json({data});
+        })
+        .catch(error=>{
+            next(error);
+        })
 };
+
 
 exports.updateTeacher = (request, response, next) => {
     const updatedData = request.body;

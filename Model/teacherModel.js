@@ -6,8 +6,8 @@ const bcrypt= require("bcryptjs");
 const schema = new mongoose.Schema({
      //_id: {type:mongoose.Types.ObjectId},
      fullname: { type: String },
-     password: { type: String ,required: true},
-     email: { type: String, required: true},
+     password: { type: String /* ,required: true */},
+     email: { type: String/* , required: true */},
      image: {type:String},
      role: { type: String, enum: ["teacher", "supervisor"], default: "teacher" }
 });

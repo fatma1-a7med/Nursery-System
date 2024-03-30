@@ -15,9 +15,7 @@ exports.insertValidator = [
     .isEmail()
  
     .withMessage("Teacher email must be valid"),
-  body("image")
-    .isString()
-    .withMessage("Teacher image path must be valid"),
+  
 
   body("role")
     .isString()
@@ -40,10 +38,7 @@ exports.updateValidator = [
       .isEmail()
       .optional()
       .withMessage("Teacher email must be valid"),
-    body("image")
-      .isString()
-      .optional()
-      .withMessage("Teacher image path must be valid")  ,
+
     body("role")
       .isString()
       .optional()
