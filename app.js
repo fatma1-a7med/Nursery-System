@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const dot_env = require("dotenv").config();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json'); 
-
 const teacherRoute=require("./Routes/teacherRoute");
 const childRoute=require("./Routes/childRouter");
 const classRoute=require("./Routes/classRouter");
@@ -17,7 +16,7 @@ const {isAuthorized, isTeacher} = require("./MiddleWares/authenticationMW");
 const server=express();
 
 
-const port=process.env.PORT || 8080;
+const port=process.env.PORT || process.env.PORT_NUMBER;
 
 //open connection then open server
 mongoose.connect(process.env.DB_URL)

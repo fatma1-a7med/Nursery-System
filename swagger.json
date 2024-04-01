@@ -25,6 +25,7 @@
     }
   ],
   "paths": {
+
     "/login": {
       "post": {
         "summary": "User login",
@@ -57,31 +58,65 @@
         }
       }
     },
+
+
+
+
+
+
+
     "/teachers": {
       "get": {
         "summary": "Get all teachers",
         "description": "Retrieve a list of all teachers",
-        
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
         ]
+        ,
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
       },
+
       "post": {
         "summary": "Add a new teacher",
         "description": "Add a new teacher to the system",
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "./Model/teacherModel"
+                "type": "object",
+                "properties": {
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["teacher", "supervisor"],
+                    "default": "teacher"
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "contentType": "multipart/form-data"
+                }
               }
             }
           }
@@ -90,22 +125,47 @@
           "200": {
             "description": "Teacher added successfully"
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       },
-      "put": {
+
+      "patch": {
         "summary": "Update a teacher",
         "description": "Update an existing teacher's information",
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "./Model/teacherModel"
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "ObjectId"
+                  },
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["teacher", "supervisor"]
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "contentType": "multipart/form-data"
+                }
               }
             }
           }
@@ -114,34 +174,41 @@
           "200": {
             "description": "Teacher updated successfully"
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
+      
+     
     },
+     
+
     "/teachers/supervisors": {
       "get": {
         "summary": "Get all supervisors",
         "description": "Retrieve a list of all supervisors",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
       }
     },
+
+
+
     "/teachers/{id}": {
       "get": {
         "summary": "Get teacher by ID",
         "description": "Retrieve details of a specific teacher by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -157,38 +224,94 @@
           "200": {
             "description": "Successful operation"
           }
-        },
+        }
+      },
+      "delete": {
+        "summary": "Delete teacher by ID",
+        "description": "Delete a specific teacher by ID",
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the teacher to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Teacher deleted successfully"
+          }
+        }
       }
     },
+
+
     "/child": {
       "get": {
         "summary": "Get all children",
         "description": "Retrieve a list of all children",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
       },
+
       "post": {
         "summary": "Add a new child",
         "description": "Add a new child to the system",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./Model/childModel/schema"
+                "type": "object",
+                "properties": {
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "city": {
+                        "type": "string"
+                      },
+                      "street": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "building": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -197,18 +320,77 @@
           "200": {
             "description": "Child added successfully"
           }
-        },
+        }
+      },
+      "patch": {
+        "summary": "Update a child",
+        "description": "Update an existing child's information",
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "fullname": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "city": {
+                        "type": "string"
+                      },
+                      "street": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "building": {
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Child updated successfully"
+          }
+        }
       }
+      
+
     },
     "/child/{id}": {
       "get": {
         "summary": "Get child by ID",
         "description": "Retrieve details of a specific child by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+        ,
         "parameters": [
           {
             "in": "path",
@@ -224,38 +406,81 @@
           "200": {
             "description": "Successful operation"
           }
-        },
+        }
+      },
+      "delete": {
+        "summary": "Delete child by ID",
+        "description": "Delete a specific child by ID",
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the child to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Child deleted successfully"
+          }
+        }
       }
     },
     "/class": {
       "get": {
         "summary": "Get all classes",
         "description": "Retrieve a list of all classes",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        },
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
       },
       "post": {
         "summary": "Add a new class",
         "description": "Add a new class to the system",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Class"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "supervisor": {
+                    "type": "string", 
+                    "description": "ID of the supervisor (teacher)"
+                  },
+                  "children": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "description": "List of IDs of children assigned to the class"
+                  }
+                },
+                "required": ["name"] 
               }
             }
           }
@@ -264,18 +489,19 @@
           "200": {
             "description": "Class added successfully"
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
+      
     },
     "/class/child/{id}": {
       "get": {
         "summary": "Get child info by class ID",
         "description": "Retrieve information of children in a specific class by class ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -291,18 +517,19 @@
           "200": {
             "description": "Successful operation"
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
+      
     },
     "/class/teacher/{id}": {
       "get": {
         "summary": "Get supervisor info by class ID",
         "description": "Retrieve information of the supervisor of a specific class by class ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -318,18 +545,18 @@
           "200": {
             "description": "Successful operation"
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
     },
     "/class/{id}": {
       "get": {
         "summary": "Get class by ID",
         "description": "Retrieve details of a specific class by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -345,12 +572,32 @@
           "200": {
             "description": "Successful operation"
           }
-        },
+        }
+      },
+      "delete": {
+        "summary": "Delete class by ID",
+        "description": "Delete a specific class by ID",
         "security": [
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the class to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Class deleted successfully"
+          }
+        }
       }
     }
   }

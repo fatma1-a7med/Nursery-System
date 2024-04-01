@@ -18,7 +18,7 @@ exports.login = (req, res, next) => {
           _id: object._id,
           role: object.role,
         },
-        "os track",
+        process.env.SECRETKEY,
       );
 
       res.json({ data: "Authenticated", token });
