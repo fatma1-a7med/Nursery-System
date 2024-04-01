@@ -54,6 +54,6 @@ Install dependencies using *npm install*.
 
 Set up the environment file (env) with required configurations.
 
-Start the server using *npm run serve* (to run nodemon).
+Start the server using *npm run dev* (to run nodemon).
 
 Access the Swagger documentation to explore available endpoints and their usage.
